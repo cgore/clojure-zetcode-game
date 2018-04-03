@@ -7,7 +7,7 @@
   []
   (doto (JFrame.)
     (.setSize 250 200)
-    (.setTitle "zetcode game")
-    (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE)
+    (.setTitle (str "zetcode game " (int (* 1000000 (rand)))))
+    (.setDefaultCloseOperation JFrame/DISPOSE_ON_CLOSE)
     (.setLocationRelativeTo nil)
     (.setVisible true)))
