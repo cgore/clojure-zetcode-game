@@ -11,15 +11,29 @@
                           Ellipse2D)))
 
 
-(defn rendering-hints []
-  )
+(defn draw-donut [^Graphics2D graphics size]
+  (doto graphics
+    (.setRenderingHints (doto (RenderingHints. RenderingHints/KEY_ANTIALIASING
+                                               RenderingHints/VALUE_ANTIALIAS_ON)
+                          (.put RenderingHints/KEY_RENDERING
+                                RenderingHints/VALUE_RENDER_QUALITY)))
+    (.setStroke (BasicStroke. 1))
+    (.setColor Color/gray))
+  (let [w (.getWidth size)
+        h (.getHeight size)
+        e (java.awt.geom.Ellipse2D$Double. 0 0 80 130)]
+    (for [deg (range 0 360 5)]
+      (doto graphics (.draw (doto (AffineTransform/getTranslateInstance (/ w 2)
+                                                                        (/ h 2))
+                              (.rotate (Math/toRadians deg))
+                              (.createTransformedShape e)))))))
 
 (defn panel
   []
   (proxy [JPanel] []
     (paintComponent [graphics]
       (proxy-super paintComponent graphics)
-      )))
+      (draw-donut graphics (proxy-super getSize)))))
 
 (defn frame
   []
